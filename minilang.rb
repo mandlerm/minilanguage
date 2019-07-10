@@ -18,8 +18,11 @@ class Minilang
 
   def run_program
     @instructions.each do |command|
-      send(command)
-
+      if command.to_i.to_s == command
+        @register = command
+      else
+        send(command)
+      end
     end
   end
 
@@ -28,6 +31,7 @@ class Minilang
   end
 
   def push
+    @stack.push(@register)
   end
 
   def add
@@ -62,11 +66,12 @@ end
 
 
 # Minilang.new('HAPPY 5 PRINT PUSH 3 PRINT ADD PRINT').eval
-# Minilang.new("")
-Minilang.new('PRINT') #.eval
+m = Minilang.new("5 PUSH PRINT 9 PUSH PRINT")
+puts m.stack
+# Minilang.new('PRINT') #.eval
 # 0
 #
-Minilang.new('5 PUSH 3 MULT PRINT') #.eval
+# Minilang.new('5 PUSH 3 MULT PRINT') #.eval
 # # 15
 #
 # Minilang.new('5 PRINT PUSH 3 PRINT ADD PRINT') #.eval
