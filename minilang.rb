@@ -35,6 +35,7 @@ class Minilang
   end
 
   def add
+    @register = @register.to_i + @stack.pop.to_i
   end
 
   def sub
@@ -66,7 +67,7 @@ end
 
 
 # Minilang.new('HAPPY 5 PRINT PUSH 3 PRINT ADD PRINT').eval
-m = Minilang.new("5 PUSH PRINT 9 PUSH PRINT")
+m = Minilang.new("5 PUSH 9 ADD PRINT")
 puts m.stack
 # Minilang.new('PRINT') #.eval
 # 0
