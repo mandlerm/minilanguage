@@ -1,6 +1,6 @@
 require 'pry'
 class Minilang
-  attr_accessor :register, :stack
+  attr_accessor :register, :stack, :instructions
   attr_reader :valid_args
 
   def initialize(command)
@@ -8,7 +8,23 @@ class Minilang
     @stack = []
     @valid_args = %(PUSH ADD SUB MULT DIV MOD POP PRINT)
 
-    check_if_valid_args(command.split)
+    if !check_if_valid_args(command.split) || command.empty?
+      abort("Abort! Error in program")
+    else
+      @instructions = command.split.map(&:downcase)
+      run_program
+    end
+  end
+
+  def run_program
+    @instructions.each do |command|
+      send(command)
+
+    end
+  end
+
+
+  def n
   end
 
   def push
@@ -33,6 +49,7 @@ class Minilang
   end
 
   def print
+    puts register
   end
 
   def check_if_valid_args(arr)
@@ -44,36 +61,37 @@ end
 
 
 
-Minilang.new('HAPPY 5 PRINT PUSH 3 PRINT ADD PRINT').eval
-# Minilang.new('PRINT').eval
+# Minilang.new('HAPPY 5 PRINT PUSH 3 PRINT ADD PRINT').eval
+# Minilang.new("")
+Minilang.new('PRINT') #.eval
 # 0
 #
-# Minilang.new('5 PUSH 3 MULT PRINT').eval
+Minilang.new('5 PUSH 3 MULT PRINT') #.eval
 # # 15
 #
-# Minilang.new('5 PRINT PUSH 3 PRINT ADD PRINT').eval
+# Minilang.new('5 PRINT PUSH 3 PRINT ADD PRINT') #.eval
 # # 5
 # # 3
 # # 8
 #
-# Minilang.new('5 PUSH 10 PRINT POP PRINT').eval
+# Minilang.new('5 PUSH 10 PRINT POP PRINT') #.eval
 # # 10
 # # 5
 #
-# Minilang.new('5 PUSH POP POP PRINT').eval
+# Minilang.new('5 PUSH POP POP PRINT') #.eval
 # # Empty stack!
 #
-# Minilang.new('3 PUSH PUSH 7 DIV MULT PRINT ').eval
+# Minilang.new('3 PUSH PUSH 7 DIV MULT PRINT ') #.eval
 # # 6
 #
-# Minilang.new('4 PUSH PUSH 7 MOD MULT PRINT ').eval
+# Minilang.new('4 PUSH PUSH 7 MOD MULT PRINT ') #.eval
 # # 12
 #
-# Minilang.new('-3 PUSH 5 XSUB PRINT').eval
+# Minilang.new('-3 PUSH 5 XSUB PRINT') #.eval
 # # Invalid token: XSUB
 #
-# Minilang.new('-3 PUSH 5 SUB PRINT').eval
+# Minilang.new('-3 PUSH 5 SUB PRINT') #.eval
 # # 8
 #
-# Minilang.new('6 PUSH').eval
+# Minilang.new('6 PUSH') #.eval
 # # (nothing printed; no PRINT commands)
